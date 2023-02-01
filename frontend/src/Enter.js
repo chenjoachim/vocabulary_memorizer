@@ -1,12 +1,22 @@
 import { useState } from "react";
 import "./App.css";
-
+import { CreateWord } from "./Memorizer";
 const Enter = ({ onClose }) => {
   const [eng, setEng] = useState("");
   const [chi, setChi] = useState("");
   const handleSubmit = () => {
     console.log({ eng: eng, chi: chi });
-    alert("Submission success!");
+    CreateWord(eng, chi)
+      .then((response) => {
+        if (response.type === "error") throw response.mes;
+        else {
+          alert(
+            response.mes.type + ' word "' + response.mes.word + '" success!'
+          );
+          console.log(response);
+        }
+      })
+      .catch((e) => alert("Error: " + e));
   };
   const handleQuit = () => {
     onClose();
