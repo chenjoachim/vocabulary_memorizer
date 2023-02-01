@@ -9,5 +9,10 @@ const CreateWord = async (eng, chi) => {
   });
   return { type, mes };
 };
-
-export { CreateWord };
+const RandomWord = async () => {
+  const {
+    data: { type, mes },
+  } = await axios.get("/test");
+  return { type, mes };
+};
+export { CreateWord, RandomWord };

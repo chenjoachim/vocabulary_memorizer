@@ -20,10 +20,12 @@ const newWord = async (eng, chi) => {
 };
 const randomWord = async () => {
   try {
-    if (Word.size() === 0) throw "Please enter some words first!";
+    if ((await Word.countDocuments({})) === 0)
+      throw "Please enter some words first!";
     else {
       const someWord = await Word.aggregate([{ $sample: { size: 1 } }]);
-      return { eng: someWord.eng, chi: someWord.chi };
+      console.log(someWord);
+      return { eng: someWord[0].English, chi: someWord[0].Chinese };
     }
   } catch (e) {
     throw e;
@@ -38,9 +40,20 @@ router.post("/new", (req, res) => {
       res.status(
         (200).send({
           type: "error",
-          mes: e,
+          mes: e.toString(),
         })
       )
     );
+});
+router.get("/test", (req, res) => {
+  randomWord()
+    .then((response) => {
+      console.log(response);
+      res.status(200).send({ type: "success", mes: response });
+    })
+    .catch((e) => {
+      console.log(e);
+      res.status(200).send({ type: "error", mes: e.toString() });
+    });
 });
 export default router;
