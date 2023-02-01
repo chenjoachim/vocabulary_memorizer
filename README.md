@@ -1,1 +1,0 @@
-# vocalbulary_memorizer
